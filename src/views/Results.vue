@@ -37,13 +37,6 @@
                 border: solid #2196f3 2px;
               "
             >
-              <!-- <v-sparkline
-                :labels="timeData.map((p) => p.time)"
-                :value="timeData.map((p) => p.direction)"
-                color="white"
-                line-width="2"
-                padding="16"
-              ></v-sparkline> -->
               <canvas ref="graph"> </canvas>
             </v-sheet>
           </v-col>
