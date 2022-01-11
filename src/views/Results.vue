@@ -193,8 +193,8 @@ export default {
             borderColor: "rgba(0,0,0,0)",
             fill: {
               target: "origin",
-              above: "#03A9F4", // Area will be red above the origin
-              below: "#F44336", // And blue below the origin
+              above: "#03A9F4", 
+              below: "#F44336", 
             },
             data: dir,
             tension: 0.1,
