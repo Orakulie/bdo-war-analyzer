@@ -73,7 +73,7 @@
         <input
           type="file"
           ref="fileUpload"
-          accept="images/*"
+          accept="image/*, .json"
           hidden
           multiple="multiple"
         />
@@ -207,7 +207,7 @@ export default {
   name: "Upload",
   data: () => ({
     images: [],
-    settings: { multipleWorkers: 1, scale: 3 },
+    settings: { multipleWorkers: 3, scale: 2 },
     settingsDialog: null,
   }),
   mounted() {
@@ -218,10 +218,13 @@ export default {
         evt.preventDefault();
       };
 
-    this.$refs.dropContainer.ondrop = (async (evt) => {
+    this.$refs.dropContainer.ondrop = async (evt) => {
       evt.preventDefault();
-      this.uploadFiles([...evt.dataTransfer.files]);
-    }).bind(this);
+      const files = [...evt.dataTransfer.files];
+      if (files.every((f) => f.type.match(/(application\/json)|(image\/)/))) {
+        this.uploadFiles([...evt.dataTransfer.files]);
+      }
+    };
 
     this.$refs.fileUpload.onchange = (async (evt) => {
       this.uploadFiles([...evt.target.files]);
@@ -236,6 +239,32 @@ export default {
         this.settings = JSON.parse(window.localStorage.getItem("settings"));
     },
     async uploadFiles(files) {
+      const jsonFile = files.find((f) => f.type.match(/application\/json/));
+      if (jsonFile) {
+        let reader = new FileReader();
+        reader.onload = function (e) {
+          const results = JSON.parse(e.target.result);
+          const allPlayers = results.members.concat(results.enemies);
+          results.logs.map((log) => {
+            const player1 = allPlayers.find((p) => p.name == log.person1);
+            const player2 = allPlayers.find((p) => p.name == log.person2);
+            log.person1 = player1;
+            log.person2 = player2;
+            if (!player1.logs) player1["logs"] = [];
+            if (!player2.logs) player2["logs"] = [];
+            player1.logs.push(log);
+            player2.logs.push(log);
+            log.time = log.time ? new Date(log.time) : null;
+          });
+
+          this.$router.push({
+            name: "Results",
+            params: { results: results },
+          });
+        }.bind(this);
+        reader.readAsText(jsonFile);
+        return;
+      }
       let newImages = files.filter(
         (img) => !this.images.find((img2) => img2.name == img.name)
       );

@@ -7,7 +7,7 @@
         <!-- <div class="text-center text-h2 mb-5">Analy</div> -->
         <v-sheet
           rounded
-          height="40vh"
+          :height="stepper != 3 ? '40vh' : ''"
           width="40%"
           class="ma-5"
           style="
@@ -115,11 +115,16 @@
                 }}.
               </p>
             </div>
-            <v-row class="justify-center mt-5" v-if="results.messages">
+            <v-row
+              class="justify-center mt-5"
+              v-if="results.messages"
+              style="display: flex; flex-direction: column; align-items: center"
+            >
               <v-btn
                 outlined
                 color="primary"
                 ref="analyzeButton"
+                class="mb-2"
                 dark
                 @click="
                   $router.push({
@@ -128,6 +133,13 @@
                   })
                 "
                 >Show details</v-btn
+              >
+              <v-btn
+                outlined
+                color="yellow darken-2"
+                dark
+                @click="exportResults()"
+                >Export</v-btn
               >
             </v-row>
           </v-container>
@@ -159,6 +171,14 @@ class Log {
     this.person1 = person1;
     this.person2 = person2;
     this.time = time;
+  }
+
+  getObject() {
+    return {
+      person1: this.person1.name,
+      person2: this.person2.name,
+      time: this.time,
+    };
   }
 }
 class Person {
@@ -192,6 +212,14 @@ class Person {
 
   getInfo() {
     return `${this.name} | Kills: ${this.kills} | Deaths: ${this.deaths} | Guild: ${this.guild}`;
+  }
+  getObject() {
+    return {
+      name: this.name,
+      guild: this.guild,
+      kills: this.kills,
+      deaths: this.deaths,
+    };
   }
 }
 function compareTwoStrings(first, second) {
@@ -282,6 +310,30 @@ export default {
     this.time = (new Date().getTime() - startTime) / 1000;
   },
   methods: {
+    exportResults() {
+      var element = document.createElement("a");
+      element.setAttribute(
+        "href",
+        "data:text/plain;charset=utf-8, " +
+          encodeURIComponent(
+            JSON.stringify({
+              enemies: this.results.enemies.map((e) => e.getObject()),
+              members: this.results.members.map((m) => m.getObject()),
+              guilds: this.results.guilds,
+              logs: this.results.logs.map((l) => l.getObject()),
+              errors: this.results.errors,
+              messages: this.results.messages,
+            })
+          )
+      );
+      element.setAttribute(
+        "download",
+        `war-${this.results.guilds.join("-")}.json`
+      );
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    },
     getLastLogTime() {
       for (let i = this.results.logs.length - 1; i >= 0; i--) {
         const log = this.results.logs[i];
@@ -461,16 +513,21 @@ export default {
             let timeString = removeTime[0];
             msg = msg.replace(removeTime[0], "");
 
-            timeString = timeString.replaceAll("C0", "00");
             timeString = timeString.replaceAll("CO", "00");
-            /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "_" }]*/
-            const [_, hours, minutes] = timeString.match(/\((\d{2}):(\d{2})\)/);
-            time = new Date(1, 1, 1);
-            if (hours == "00") {
-              time = new Date(1, 1, 2);
+            for (let i = 0; i < 10; i++) {
+              timeString = timeString.replaceAll("C" + i, "0" + i);
             }
-            time.setHours(hours);
-            time.setMinutes(minutes);
+            /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "_" }]*/
+            const timeStringMatch = timeString.match(/\((\d{2}):(\d{2})\)/);
+            if (timeStringMatch) {
+              const [_, hours, minutes] = timeStringMatch;
+              time = new Date(1, 1, 1);
+              if (hours == "00") {
+                time = new Date(1, 1, 2);
+              }
+              time.setHours(hours);
+              time.setMinutes(minutes);
+            }
           }
           msg = msg.replaceAll("(", "[");
           msg = msg.replaceAll(")", "]");
@@ -549,11 +606,10 @@ export default {
         }
         logs = logs.concat(currentLogs);
       });
-      logs.sort((a, b) =>
-        a.time < b.time && !(b.time <= "(23:59)" && a.time.slice(0, 3) == "(00")
-          ? -1
-          : 1
-      );
+      logs.sort((a, b) => (a.time < b.time ? -1 : 1));
+      members
+        .concat(enemies)
+        .map((m) => m.logs.sort((a, b) => (a.time < b.time ? -1 : 1)));
       members.sort((a, b) => b.kills - a.kills);
       enemies.sort((a, b) => b.kills - a.kills);
       /*       members.forEach((m) => console.log(m.getInfo()));
@@ -564,7 +620,9 @@ export default {
           (messages - errors) / messages
         }`
       ); */
-
+      /*  members = members.map((m) => m.getObject());
+      enemies = enemies.map((e) => e.getObject());
+      logs = logs.map((l) => l.getObject()); */
       return {
         members: members,
         enemies: enemies,
