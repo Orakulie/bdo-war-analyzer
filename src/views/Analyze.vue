@@ -4,7 +4,6 @@
       <v-container
         style="display: flex; flex-direction: column; align-items: center"
       >
-        <!-- <div class="text-center text-h2 mb-5">Analy</div> -->
         <v-sheet
           rounded
           :height="stepper != 3 ? '40vh' : ''"

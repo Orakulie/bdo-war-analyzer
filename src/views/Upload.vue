@@ -4,7 +4,7 @@
       <v-container
         style="display: flex; flex-direction: column; align-items: center"
       >
-        <div class="text-center text-h2 mb-5">GvG Analyzer</div>
+        <div class="text-center text-h2 mb-5">War Analyzer</div>
 
         <v-hover v-slot="{ hover }">
           <v-sheet
@@ -51,10 +51,6 @@
                     </v-btn>
                   </v-app-bar>
                   <v-card-text class="text-center pt-0">
-                    <!-- <v-progress-linear
-                      :ref="img.name"
-                      indeterminate
-                    ></v-progress-linear> -->
                   </v-card-text>
                 </v-card>
                 <v-card
@@ -97,7 +93,7 @@
           <v-dialog
             v-model="settingsDialog"
             transition="dialog-bottom-transition"
-            width="30%"
+            width="50%"
           >
             <template v-slot:activator="{ on, attrs }">
               <v-btn color="primary" dark v-bind="attrs" v-on="on" icon>
@@ -186,7 +182,7 @@
   line-height: 2rem;
   letter-spacing: normal !important;
   font-family: "Roboto", sans-serif !important;
-
+  text-align: center;
   align-items: center !important;
   justify-content: center !important;
 
