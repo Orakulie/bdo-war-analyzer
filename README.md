@@ -11,4 +11,9 @@ To achieve the best results you will need to take the screenshots in the followi
 ![settings](https://github.com/sch-28/war-analyzer/blob/main/public/readme/settings.png)
 
 Example screenshot:
+
 ![screenshot](https://github.com/sch-28/war-analyzer/blob/main/public/readme/screenshot.png)
+
+
+### Help
+If you have any questions add me on Discord: ORACLE#7672
