@@ -1,6 +1,13 @@
 # [War Analyzer](https://sch-28.github.io/war-analyzer/) for [Black Desert Online](https://www.naeu.playblackdesert.com/)
 This tool allows easy scanning of combat logs. Just upload your screenshots and let the website handle the rest.
 
+<p align="center">
+  <img  src="https://github.com/sch-28/war-analyzer/blob/main/public/readme/result.jpg">
+</p>
+<p align="center">
+  <img  src="https://github.com/sch-28/war-analyzer/blob/main/public/readme/stats.jpg">
+</p>
+
 # Screenshot format
 To achieve the best results you will need to take the screenshots in the following format:
 - only dislpay combat messages
