@@ -15,5 +15,9 @@ Example screenshot:
 ![screenshot](https://github.com/sch-28/war-analyzer/blob/main/public/readme/screenshot.png)
 
 
-### Help
-If you have any questions add me on Discord: ORACLE#7672
+# Need help?
+If you have any questions, feel free to add me on Discord: ORACLE#7672
+
+
+# Disclaimer
+This was one of my first Vue projects. It works, but the code is pretty rough. It will need a rewrite if there is any demand for additional features.
