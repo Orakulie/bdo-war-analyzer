@@ -1,4 +1,4 @@
-# [War Analyzer](https://sch-28.github.io/war-analyzer/) for [Black Desert Online](https://www.naeu.playblackdesert.com/)
+# [War Analyzer](https://sch-28.github.io/OUTDATED-war-analyzer/) for [Black Desert Online](https://www.naeu.playblackdesert.com/)
 This tool allows easy scanning of combat logs. Just upload your screenshots and let the website handle the rest.
 
 <p align="center">
