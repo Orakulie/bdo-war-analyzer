@@ -12,7 +12,7 @@ git init
 git branch -m main
 git add -A
 git commit -m 'deploy'
-git remote add origin https://github.com/sch-28/war-analyzer.git
+git remote add origin https://github.com/sch-28/OUTDATED-war-analyzer.git
 git push -f -u origin main:github_page
 
 cd -

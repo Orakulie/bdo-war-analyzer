@@ -1,4 +1,4 @@
 module.exports = {
 	transpileDependencies: ["vuetify"],
-	publicPath: process.env.NODE_ENV === "production" ? "/war-analyzer/" : "/",
+	publicPath: process.env.NODE_ENV === "production" ? "/OUTDATED-war-analyzer/" : "/",
 };
